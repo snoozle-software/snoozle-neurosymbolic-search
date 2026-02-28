@@ -1,0 +1,48 @@
+
+services:
+  neo4j:
+    image: neo4j:5.13.0
+    hostname: neo4j
+    env_file:
+      - neo4j.env
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7474/" ]
+      interval: 10s
+      retries: 10
+    networks:
+      neurosymbolic:
+        aliases:
+          - neo4j
+  embedding-service:
+    build:
+      context: ./python
+    ports:
+      - 5000:5000
+    depends_on:
+      - neo4j
+    networks:
+      - neurosymbolic
+  search-app:
+    build: .
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    depends_on:
+      - neo4j
+      - embedding-service
+    networks:
+      - neurosymbolic
+    volumes:
+      - ./data:/data
+volumes:
+  neo4j_data:
+  neo4j_logs:
+networks:
+  neurosymbolic:
