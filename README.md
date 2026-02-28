@@ -2,7 +2,7 @@
 
 This repo shows how to combine Neo4j full-text search with local Sentence-Transformers embeddings (via FastAPI) and a Spring Boot REST API, mirroring the public demo at [https://jewelry.desertrosedesigns.net](https://jewelry.desertrosedesigns.net).
 
-## What’s inside
+## Whatï¿½s inside
 - `data/products.csv`: sample catalog to import.
 - `src/main/java/net/desertrosedesigns/delta/search`: Spring Boot API, Neo4j wiring, ingestion, search services, and DTOs.
 - `python/`: FastAPI embedding service backed by `sentence-transformers/all-MiniLM-L6-v2`.
@@ -32,7 +32,8 @@ This repo shows how to combine Neo4j full-text search with local Sentence-Transf
    ```bash
    curl http://localhost:8080/api/products/import
    ```
-5. Try each endpoint:
+5. Wait for ingestiong of data and embedding generation (output {"imported":2379})
+6. Try each endpoint:
    ```bash
    curl "http://localhost:8080/api/search/text?q=hoop&limit=5"
    curl "http://localhost:8080/api/search/embedding?q=hoop&limit=5"
@@ -62,7 +63,7 @@ Use the hybrid query shown in the previous plan description if you want to repro
 ## Embedding service contract
 - POST `/embed` with JSON `{"inputs": ["your text"]}`.
 - Response `{"embeddings": [[...]]}` contains the vector for each input.
-- The Spring app caches the results so repeated texts don’t hit the embedder every time.
+- The Spring app caches the results so repeated texts donï¿½t hit the embedder every time.
 
 ## Testing
 - Run the Java unit/controller tests locally:
@@ -93,6 +94,10 @@ Use the hybrid query shown in the previous plan description if you want to repro
 4. Compare against the live site at [https://jewelry.desertrosedesigns.net](https://jewelry.desertrosedesigns.net) for reference.
 
 ## Notes
-- Embeddings stay local—no external API key required.
+- Embeddings stay localï¿½no external API key required.
 - `data/products.csv` already includes the text fields used for embeddings.
 - Adjust `.env` variables if your Neo4j/embedding service endpoints differ.
+- Let me (https://github.com/greggers) know if you use it
+
+## License
+MIT License
